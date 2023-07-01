@@ -6,6 +6,10 @@ mp_face_mesh = mp.solutions.face_mesh
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 
+coord_indices = set()
+for line in mp_face_mesh.FACEMESH_LIPS:
+    coord_indices.add(line[0])
+    coord_indices.add(line[1])
 
 # create FaceMesh obj
 face_mesh = mp_face_mesh.FaceMesh(refine_landmarks=True)
@@ -27,11 +31,6 @@ while video_input.isOpened():
 
     if results.multi_face_landmarks:
         for face_landmarks in results.multi_face_landmarks:
-            coord_indices = set()
-            for line in mp_face_mesh.FACEMESH_LIPS:
-                coord_indices.add(line[0])
-                coord_indices.add(line[1])
-
             coords = []
             for index in coord_indices:
                 lm = face_landmarks.landmark[index]
